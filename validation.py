@@ -3,6 +3,7 @@ import datetime
 import pandas as pd
 import xlsxwriter
 import subprocess
+import plotly.graph_objects as go
 
 try:
     result = subprocess.run(['git', 'pull'], check=True, text=True, capture_output=True)
@@ -196,4 +197,72 @@ with pd.ExcelWriter('Analysis_Report.xlsx') as writer:
     df_results.to_excel(writer, sheet_name="Analysis", index=False)
 
 print("Analysis saved to Analysis_Report.xlsx")
+
+def create_chart(df_results):
+    # Create a bar chart with completed and pending students
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x=df_results["Week"], y=df_results["Completed Students"], name='Completed Students', marker_color='green'))
+    fig.add_trace(go.Bar(x=df_results["Week"], y=df_results["Pending Students"], name='Pending Students', marker_color='red'))
+
+    # Update layout for better appearance
+    fig.update_layout(
+        title='Students Status Analysis',
+        xaxis=dict(title='Week'),
+        yaxis=dict(title='Number of Students'),
+        barmode='group'
+    )
+    
+    # Convert plotly figure to HTML and return
+    return fig.to_html(full_html=False)
+
+# Generate the chart
+chart_html = create_chart(df_results)
+
+# Define a basic Bootstrap template for the HTML report
+# Update HTML_TEMPLATE to include a placeholder for the chart
+HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Report</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">Analysis Report</h1>
+        {chart}
+        <div class="table-responsive mt-5">
+            {table}
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+# Convert the analysis DataFrame to HTML
+html_content = df_results.to_html(classes='table table-bordered table-hover', table_id='analysisTable')
+
+# Using JavaScript to ensure the table takes the full width
+html_content += """
+<script>
+    document.getElementById('analysisTable').style.width = '100%';
+</script>
+"""
+
+# Replace the placeholders in the template with the table and the chart
+html_report = HTML_TEMPLATE.format(table=html_content, chart=chart_html)
+
+# Define the name for the HTML report
+html_report_filename = "Analysis_Report_Bootstrap.html"
+
+# Save the HTML content to a file
+with open(html_report_filename, 'w', encoding='utf-8') as file:
+    file.write(html_report)
+
+print(f"Analysis saved to {html_report_filename}")
+
+
+
 
