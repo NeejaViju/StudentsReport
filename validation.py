@@ -1,6 +1,17 @@
 import os
 import datetime
 import pandas as pd
+import xlsxwriter
+import subprocess
+
+try:
+    result = subprocess.run(['git', 'pull'], check=True, text=True, capture_output=True)
+    print(result.stdout)
+except subprocess.CalledProcessError as e:
+    print(f"Error pulling from git: {e}")
+    # Decide how to handle the error: e.g., exit the script
+    exit(1)
+
 
 parent_folder_path = "Students"
 
@@ -91,6 +102,9 @@ for specific_week in weeks_to_report:
 
     report_excel_filename = f"{specific_week}_report.xlsx"
 
+
+#analysis Report----------------------------------------------------
+
     # Begin the Excel writing and formatting segment
     with pd.ExcelWriter(report_excel_filename, engine="xlsxwriter") as writer:
         report_df.to_excel(writer, sheet_name="Report", index=False)
@@ -133,3 +147,53 @@ for specific_week in weeks_to_report:
         worksheet.write(len(report_df) + 3, 0, f"Generated: {current_datetime_str}")
 
     print(f"Excel report generated: {report_excel_filename}")
+
+def analyze_report(specific_week):
+    report_excel_filename = f"{specific_week}_report.xlsx"
+    
+    # Load the generated report
+    report_df = pd.read_excel(report_excel_filename)
+
+    analysis_dict = {"Week": specific_week}
+    
+    # 1. Number and Percentage of Completed Students
+    completed_students = report_df[report_df["Completion Status"] == "Completed"]
+    num_completed_students = len(completed_students)
+    percent_completed_students = (num_completed_students / len(report_df)) * 100
+
+    analysis_dict["Completed Students"] = num_completed_students
+    analysis_dict["Completed Percentage"] = percent_completed_students
+
+    # 2. Number and Percentage of Pending Students
+    pending_students = report_df[report_df["Completion Status"] == "Pending"]
+    num_pending_students = len(pending_students)
+    percent_pending_students = (num_pending_students / len(report_df)) * 100
+
+    analysis_dict["Pending Students"] = num_pending_students
+    analysis_dict["Pending Percentage"] = percent_pending_students
+
+    # 3. Tasks Most Frequently Pending
+    all_pending_tasks = report_df["Pending Task"].dropna().str.split(", ").sum()
+    task_counts = pd.Series(all_pending_tasks).value_counts()
+    for task, count in task_counts.items():
+        analysis_dict[task] = count
+
+    return analysis_dict
+
+# Define the weeks you want to analyze
+weeks_to_analyze = ["Week01", "Week02"]  # Add or remove weeks as per your data
+
+results = []
+for week in weeks_to_analyze:
+    week_analysis = analyze_report(week)
+    results.append(week_analysis)
+
+# Convert the list of dictionaries to DataFrame
+df_results = pd.DataFrame(results)
+
+# Save to Excel
+with pd.ExcelWriter('Analysis_Report.xlsx') as writer:
+    df_results.to_excel(writer, sheet_name="Analysis", index=False)
+
+print("Analysis saved to Analysis_Report.xlsx")
+
