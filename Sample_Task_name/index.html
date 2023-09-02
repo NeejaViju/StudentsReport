@@ -83,6 +83,41 @@
             color: white;
             cursor: pointer;
         }
+
+        /* Add this to your <style> section */
+.select-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 200px;
+}
+
+#weekSelector {
+    display: block;
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #ffffff;
+    appearance: none; /* Removes default styling */
+    -webkit-appearance: none; /* For Safari */
+    -moz-appearance: none; /* For Firefox */
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAMCAYAAABr5z2BAAAAKklEQVQoU2NkIBIwEqmOYf8PwClkIkEzBpgNSoyMDBMlFgMqMygxFVM0MwAAz3wU/Qdbb7EAAAAASUVORK5CYII=') no-repeat 95% center;
+    background-size: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.select-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 16px;
+    right: 10px;
+    border: 8px solid transparent;
+    border-top-color: #555;
+    pointer-events: none;
+}
+
     </style>
     <script>
         function copyTaskName(taskName) {
@@ -106,12 +141,43 @@
             const popup = document.querySelector('.popup');
             popup.style.display = 'none';
         }
+
+        function showWeekTasks() {
+        const selectedWeek = document.getElementById('weekSelector').value;
+
+        // Initially hide all weeks
+        const allTasks = document.querySelectorAll('.task-card');
+        allTasks.forEach(task => task.style.display = 'none');
+
+        if (selectedWeek === 'week01') {
+            document.querySelector('.task-card:nth-child(1)').style.display = 'block';  // Assuming week 1 is the first child
+        } else if (selectedWeek === 'week02') {
+            document.querySelector('.task-card:nth-child(2)').style.display = 'block';  // Assuming week 2 is the second child
+        }
+        // ... Continue with other weeks if needed
+    }
+
+    // Run the function on page load to display Week 01 tasks by default
+    window.onload = showWeekTasks;
     </script>
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Pepper Programming ++</h1>
         <h2 class="text-center mb-4">Weekly task list</h2>
+        <br>
+
+ <!-- add weeks here  -->
+<div class="text-center mb-4">
+    <div class="select-wrapper">
+        <select id="weekSelector" onchange="showWeekTasks()">
+            <option value="week01">Week 01</option>
+            <option value="week02">Week 02</option>
+            <!-- Add more weeks as needed -->
+        </select>
+    </div>
+</div>
+
         
         <div class="task-table">
             <div class="task-card">
@@ -200,5 +266,7 @@
             <a href="https://merge.imageonline.co/" target="_blank">website</a> to merge"
         </p>
     </div>
+    
+</div>
 </body>
 </html>
