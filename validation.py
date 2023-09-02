@@ -255,7 +255,7 @@ html_content += """
 html_report = HTML_TEMPLATE.format(table=html_content, chart=chart_html)
 
 # Define the name for the HTML report
-html_report_filename = "Analysis_Report_Bootstrap.html"
+html_report_filename = "Analysis_Report.html"
 
 # Save the HTML content to a file
 with open(html_report_filename, 'w', encoding='utf-8') as file:
