@@ -27,6 +27,7 @@ student_data = {
     "PPP012": "Yogesh Kumar JG",
     "PPP013": "Aravindhan Selvaraj",
     "PPP014": "Naveen Bromiyo A R",
+    "PPP015": "Kalai Selvi",
     "PPP016": "Madhan Karthick",
     "PPP017": "Pavithra Selvaraj",
     "PPP018": "Sindhu Laheri Uthaya Surian",
@@ -40,7 +41,8 @@ student_data = {
     "PPF007": "Riyas ahamed J",
 }
 
-#validation part
+weeks_to_report = ["Week01", "Week02"]  # Add other weeks as needed
+
 def is_file_present(expected_file, files_in_folder):
     return any(
         expected_file.lower() == file_in_folder.lower()
@@ -53,104 +55,81 @@ def validate_week_folder(week_folder_path, expected_files):
         os.path.splitext(f)[0].strip().lower() for f in files_in_folder
     ]
     present_files = [
-        file
-        for file in expected_files
-        if is_file_present(file, files_in_folder_stripped)
+        file for file in expected_files if is_file_present(file, files_in_folder_stripped)
     ]
     missing_files = [
-        file
-        for file in expected_files
-        if not is_file_present(file, files_in_folder_stripped)
+        file for file in expected_files if not is_file_present(file, files_in_folder_stripped)
     ]
     return present_files, missing_files
 
-#define weeks for report
-specific_week = "Week02"
+for specific_week in weeks_to_report:
 
-#date and Time 
-current_datetime = datetime.datetime.now()
-current_datetime_str = current_datetime.strftime("%Y-%m-%d %I:%M:%S %p")
+    current_datetime = datetime.datetime.now()
+    current_datetime_str = current_datetime.strftime("%Y-%m-%d %I:%M:%S %p")
 
-# store the generated Data
-report_data = []
+    report_data = []
 
-for student_id, student_name in student_data.items():
-    student_folder_path = os.path.join(
-        parent_folder_path, f"{student_id} - {student_name}"
+    for student_id, student_name in student_data.items():
+        student_folder_path = os.path.join(parent_folder_path, f"{student_id} - {student_name}")
+        week_folder_path = os.path.join(student_folder_path, specific_week)
+
+        if os.path.exists(week_folder_path) and os.path.isdir(week_folder_path):
+            expected_files = default_tasks.get(specific_week, [])
+            present_files, missing_files = validate_week_folder(week_folder_path, expected_files)
+            missing_files_str = ", ".join(missing_files)
+            completion_status = "Completed" if not missing_files else "Pending"
+            report_data.append(
+                [student_id, student_name, specific_week, missing_files_str, completion_status]
+            )
+        else:
+            report_data.append([student_id, student_name, specific_week, "Folder not found", ""])
+
+    report_df = pd.DataFrame(
+        report_data,
+        columns=["Student ID", "Student Name", "Week", "Pending Task", "Completion Status"]
     )
-    week_folder_name = specific_week
-    week_folder_path = os.path.join(student_folder_path, week_folder_name)
 
-    if (
-        os.path.exists(student_folder_path)
-        and os.path.isdir(student_folder_path)
-        and os.path.exists(week_folder_path)
-        and os.path.isdir(week_folder_path)
-    ):
-        expected_files = default_tasks.get(week_folder_name, [])
-        present_files, missing_files = validate_week_folder(
-            week_folder_path, expected_files
-        )
-        missing_files_str = ", ".join(missing_files)
-        completion_status = (
-            "Completed" if len(present_files) == len(expected_files) else "Pending"
-        )
-        report_data.append(
-            [
-                student_id,
-                student_name,
-                week_folder_name,
-                missing_files_str,
-                completion_status,
-            ]
-        )
-    else:
-        report_data.append(
-            [student_id, student_name, week_folder_name, "Folder or data not found", ""]
-        )
+    report_excel_filename = f"{specific_week}_report.xlsx"
 
-#export data
-report_df = pd.DataFrame(
-    report_data,
-    columns=["Student ID", "Student Name", "Week", "Pending Task", "Completion Status"],
-)
+    # Begin the Excel writing and formatting segment
+    with pd.ExcelWriter(report_excel_filename, engine="xlsxwriter") as writer:
+        report_df.to_excel(writer, sheet_name="Report", index=False)
 
-#styling excel data
-report_excel_filename = f"{specific_week}_report.xlsx"
-with pd.ExcelWriter(report_excel_filename, engine="xlsxwriter") as writer:
-    report_df.to_excel(writer, sheet_name="Report", index=False)
+        workbook = writer.book
+        worksheet = writer.sheets["Report"]
 
-    workbook = writer.book
-    worksheet = writer.sheets["Report"]
-
-    header_format = workbook.add_format(
-        {
+        # Header formatting
+        header_format = workbook.add_format({
             "bold": True,
             "text_wrap": True,
             "valign": "top",
             "fg_color": "#007bff",
             "font_color": "white",
-            "border": 1,
-        }
-    )
+            "border": 1
+        })
 
-    for col_num, value in enumerate(report_df.columns.values):
-        worksheet.write(0, col_num, value, header_format)
-        column_len = max(report_df[value].astype(str).apply(len).max(), len(value))
-        col_width = column_len + 2
-        worksheet.set_column(col_num, col_num, col_width)
+        # Completed tasks formatting
+        green_format = workbook.add_format({
+            "bg_color": "green",
+            "font_color": "white",
+            "bold": True
+        })
 
-    worksheet.write(len(report_df) + 2, 0, f"Week: {specific_week}")
-    worksheet.write(len(report_df) + 3, 0, f"Generated: {current_datetime_str}")
+        # Formatting column widths and headers
+        for col_num, value in enumerate(report_df.columns.values):
+            worksheet.write(0, col_num, value, header_format)
+            column_len = max(report_df[value].astype(str).apply(len).max(), len(value))
+            col_width = column_len + 2
+            worksheet.set_column(col_num, col_num, col_width)
 
-    green_format = workbook.add_format(
-        {"bg_color": "green", "font_color": "white", "bold": True}
-    )
-    for row_num, completion_status in enumerate(report_df["Completion Status"]):
-        if completion_status == "Completed":
-            worksheet.write(
-                row_num + 1, 1, report_df.at[row_num, "Student Name"], green_format
-            )
-            worksheet.write(row_num + 1, 4, completion_status, green_format)
+        # Styling specific columns based on completion status
+        for row_num, completion_status in enumerate(report_df["Completion Status"], start=1):
+            if completion_status == "Completed":
+                worksheet.write(row_num, report_df.columns.get_loc("Student Name"), report_df.iloc[row_num-1]["Student Name"], green_format)
+                worksheet.write(row_num, report_df.columns.get_loc("Completion Status"), completion_status, green_format)
 
-print(f"Excel report generated: {report_excel_filename}")
+        # Write additional data at the end of the report
+        worksheet.write(len(report_df) + 2, 0, f"Week: {specific_week}")
+        worksheet.write(len(report_df) + 3, 0, f"Generated: {current_datetime_str}")
+
+    print(f"Excel report generated: {report_excel_filename}")
