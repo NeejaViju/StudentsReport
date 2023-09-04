@@ -6,8 +6,6 @@ import subprocess
 import plotly.graph_objects as go
 
 
-
-
 parent_folder_path = "Students"
 
 # Default tasks for each week
