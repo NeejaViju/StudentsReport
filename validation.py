@@ -6,7 +6,17 @@ import subprocess
 import plotly.graph_objects as go
 
 
-
+try:
+    result = subprocess.run(['git', 'pull'], check=True, text=True, capture_output=True)
+    print(result.stdout)
+    if result.stderr:
+        print("Error output:", result.stderr)
+except subprocess.CalledProcessError as e:
+    print(f"Error pulling from git: {e}")
+    if e.stderr:
+        print("Detailed error:", e.stderr.strip())
+    # Decide how to handle the error: e.g., exit the script
+    exit(1)
 
 parent_folder_path = "Students"
 
