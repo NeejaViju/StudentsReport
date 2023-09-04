@@ -263,7 +263,7 @@ with open(html_report_filename, 'w', encoding='utf-8') as file:
 
 print(f"Analysis saved to {html_report_filename}")
 
-# ... rest of your code ...
+# ...function to push all the changes in git hub
 
 def git_stage(file_list):
     """Stage files for git commit."""
@@ -283,7 +283,7 @@ def git_push():
 # Now, stage, commit, and push your changes
 
 # Stage the files. In this case, the generated report files.
-files_to_stage = ['Analysis_Report.xlsx', 'Analysis_Report.html'] 
+files_to_stage = ['Analysis_Report.xlsx', 'Analysis_Report.html','Week01_report.xlsx','Week02_report.xlsx'] 
 # Add other generated files or files you've modified if necessary.
 
 try:
