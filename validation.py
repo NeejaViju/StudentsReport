@@ -5,13 +5,7 @@ import xlsxwriter
 import subprocess
 import plotly.graph_objects as go
 
-try:
-    result = subprocess.run(['git', 'pull'], check=True, text=True, capture_output=True)
-    print(result.stdout)
-except subprocess.CalledProcessError as e:
-    print(f"Error pulling from git: {e}")
-    # Decide how to handle the error: e.g., exit the script
-    exit(1)
+
 
 
 parent_folder_path = "Students"
