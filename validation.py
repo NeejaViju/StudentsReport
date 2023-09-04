@@ -263,6 +263,36 @@ with open(html_report_filename, 'w', encoding='utf-8') as file:
 
 print(f"Analysis saved to {html_report_filename}")
 
+# ... rest of your code ...
+
+def git_stage(file_list):
+    """Stage files for git commit."""
+    cmd = ['git', 'add'] + file_list
+    subprocess.run(cmd, check=True)
+
+def git_commit(commit_message):
+    """Commit staged changes with a message."""
+    cmd = ['git', 'commit', '-m', commit_message]
+    subprocess.run(cmd, check=True)
+
+def git_push():
+    """Push committed changes to remote repository."""
+    cmd = ['git', 'push']
+    subprocess.run(cmd, check=True)
+
+# Now, stage, commit, and push your changes
+
+# Stage the files. In this case, the generated report files.
+files_to_stage = ['Analysis_Report.xlsx', 'Analysis_Report.html'] 
+# Add other generated files or files you've modified if necessary.
+
+try:
+    git_stage(files_to_stage)
+    git_commit("Updated analysis reports.")
+    git_push()
+    print("Successfully pushed the updated reports to GitHub.")
+except subprocess.CalledProcessError as e:
+    print(f"Error pushing to GitHub: {e}")
 
 
 
