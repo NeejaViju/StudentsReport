@@ -16,6 +16,7 @@ student_data = {
     "PPP012": "Yogesh Kumar JG",
     "PPP013": "Aravindhan Selvaraj",
     "PPP014": "Naveen Bromiyo A R",
+    "PPP015": "Kalai Selvi",
     "PPP016": "Madhan Karthick",
     "PPP017": "Pavithra Selvaraj",
     "PPP018": "Sindhu Laheri Uthaya Surian",
@@ -29,7 +30,7 @@ student_data = {
     "PPF007": "Riyas ahamed J"
 }
 
-weeks = 2  # Number of weeks
+weeks = 4  # Number of weeks
 
 for student_id, student_name in student_data.items():
     student_folder = os.path.join("Students", f"{student_id} - {student_name}")
@@ -51,6 +52,6 @@ for student_id, student_name in student_data.items():
         draw.text((10, 30), f"Student: {student_name}", fill='black', font=font)
 
         image.save(os.path.join(week_folder, 'sample.png'))
-        print(f"Created sample.png for {student_name} - Week{week:02}")
+        print(f"Created sample.png for {student_name} - Week{week:04}")
 
 print("Folder creation and image generation completed!")
