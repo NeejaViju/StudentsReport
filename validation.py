@@ -1,11 +1,9 @@
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
+import os
+import datetime
 import pandas as pd
-import openpyxl
-
+import xlsxwriter
+import subprocess
+import plotly.graph_objects as go
 
 try:
     result = subprocess.run(['git', 'pull'], check=True, text=True, capture_output=True)
