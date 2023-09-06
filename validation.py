@@ -23,6 +23,7 @@ parent_folder_path = "Students"
 default_tasks = {
     "Week01": ["Git_Task","Index_File_Updation","create_Html_file_on_Name","dulingo_update"],
     "Week02": ["create_wordpress_blog_and_7articles","update_linkedin_with-photo","create_canva-menu","download_figma_and_install"],
+    "week03" :["Fibonacci_Sequence","Calculator","Tic_Tac_Toe","Generative AI"]
     # ... default tasks for other weeks
 }
 
@@ -56,7 +57,7 @@ student_data = {
     "PPF007": "Riyas ahamed J",
 }
 
-weeks_to_report = ["Week01", "Week02", "week03","week04"]  # Add other weeks as needed
+weeks_to_report = ["Week01", "Week02", "week03"]  # Add other weeks as needed
 
 def is_file_present(expected_file, files_in_folder):
     return any(
@@ -107,7 +108,7 @@ for specific_week in weeks_to_report:
     report_excel_filename = f"{specific_week}_report.xlsx"
 
 
-#analysis Report----------------------------------------------------
+
 
     # Begin the Excel writing and formatting segment
     with pd.ExcelWriter(report_excel_filename, engine="xlsxwriter") as writer:
@@ -151,6 +152,9 @@ for specific_week in weeks_to_report:
         worksheet.write(len(report_df) + 3, 0, f"Generated: {current_datetime_str}")
 
     print(f"Excel report generated: {report_excel_filename}")
+
+
+#analysis Report----------------------------------------------------
 
 def analyze_report(specific_week):
     report_excel_filename = f"{specific_week}_report.xlsx"
