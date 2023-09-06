@@ -1,9 +1,10 @@
-import os
-import datetime
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 import pandas as pd
-import xlsxwriter
-import subprocess
-import plotly.graph_objects as go
+import openpyxl
 
 
 try:
