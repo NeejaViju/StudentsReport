@@ -5,6 +5,7 @@ import xlsxwriter
 import subprocess
 import plotly.graph_objects as go
 
+#---------automated git pull code 
 # try:
 #     result = subprocess.run(['git', 'pull'], check=True, text=True, capture_output=True)
 #     print(result.stdout)
