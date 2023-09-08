@@ -23,7 +23,8 @@ parent_folder_path = "Students"
 default_tasks = {
     "Week01": ["Git_Task","Index_File_Updation","create_Html_file_on_Name","dulingo_update"],
     "Week02": ["create_wordpress_blog_and_7articles","update_linkedin_with-photo","create_canva-menu","download_figma_and_install"],
-    "week03" :["Fibonacci_Sequence","Calculator","Tic_Tac_Toe","Generative AI"]
+    "week03" :["Fibonacci_Sequence","Calculator","Tic_Tac_Toe","Generative AI"],
+    "Week04": ["Error messages_200 OK_404 Not Found","Google Chrome Extensions","Tweet_AI tool_Futurepedia","Download_Install_ Google Chrome Canary Version"]         
     # ... default tasks for other weeks
 }
 
@@ -57,7 +58,7 @@ student_data = {
     "PPF007": "Riyas ahamed J",
 }
 
-weeks_to_report = ["Week01", "Week02", "week03"]  # Add other weeks as needed
+weeks_to_report = ["Week01", "Week02", "week03", "week04"]  # Add other weeks as needed
 
 def is_file_present(expected_file, files_in_folder):
     return any(
