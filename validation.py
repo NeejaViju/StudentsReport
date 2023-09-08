@@ -5,17 +5,17 @@ import xlsxwriter
 import subprocess
 import plotly.graph_objects as go
 
-try:
-    result = subprocess.run(['git', 'pull'], check=True, text=True, capture_output=True)
-    print(result.stdout)
-    if result.stderr:
-        print("Error output:", result.stderr)
-except subprocess.CalledProcessError as e:
-    print(f"Error pulling from git: {e}")
-    if e.stderr:
-        print("Detailed error:", e.stderr.strip())
-    # Decide how to handle the error: e.g., exit the script
-    exit(1)
+# try:
+#     result = subprocess.run(['git', 'pull'], check=True, text=True, capture_output=True)
+#     print(result.stdout)
+#     if result.stderr:
+#         print("Error output:", result.stderr)
+# except subprocess.CalledProcessError as e:
+#     print(f"Error pulling from git: {e}")
+#     if e.stderr:
+#         print("Detailed error:", e.stderr.strip())
+#     # Decide how to handle the error: e.g., exit the script
+#     exit(1)
 
 parent_folder_path = "Students"
 
@@ -23,7 +23,7 @@ parent_folder_path = "Students"
 default_tasks = {
     "Week01": ["Git_Task","Index_File_Updation","create_Html_file_on_Name","dulingo_update"],
     "Week02": ["create_wordpress_blog_and_7articles","update_linkedin_with-photo","create_canva-menu","download_figma_and_install"],
-    "week03" :["Fibonacci_Sequence","Calculator","Tic_Tac_Toe","Generative AI"],
+    "Week03" :["Fibonacci_Sequence","Calculator","Tic_Tac_Toe","Generative AI"],
     "Week04": ["Error messages_200 OK_404 Not Found","Google Chrome Extensions","Tweet_AI tool_Futurepedia","Download_Install_ Google Chrome Canary Version"]         
     # ... default tasks for other weeks
 }
