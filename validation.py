@@ -58,7 +58,7 @@ student_data = {
     "PPF007": "Riyas ahamed J",
 }
 
-weeks_to_report = ["Week01", "Week02", "week03", "week04"]  # Add other weeks as needed
+weeks_to_report = ["Week01", "Week02", "Week03", "Week04"]  # Add other weeks as needed
 
 def is_file_present(expected_file, files_in_folder):
     return any(
