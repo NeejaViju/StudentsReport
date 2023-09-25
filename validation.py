@@ -24,8 +24,9 @@ parent_folder_path = "Students"
 default_tasks = {
     "Week01": ["Git_Task","Index_File_Updation","create_Html_file_on_Name","dulingo_update"],
     "Week02": ["create_wordpress_blog_and_7articles","update_linkedin_with-photo","create_canva-menu","download_figma_and_install"],
-    "Week03" :["Fibonacci_Sequence","Calculator","Tic_Tac_Toe","Generative AI"],
-    "Week04": ["Error messages_200 OK_404 Not Found","Google Chrome Extensions","Tweet_AI tool_Futurepedia","Download_Install_ Google Chrome Canary Version"]         
+    "Week03":["Fibonacci_Sequence","Calculator","Tic_Tac_Toe","Generative AI"],
+    "Week04": ["Error messages_200 OK_404 Not Found","Google Chrome Extensions","Tweet_AI tool_Futurepedia","Download_Install_ Google Chrome Canary Version"], 
+    "Week05":  ["Create Framer Site","Create a Project on Flutterflow","Create Paper Prototype","Create Social Media Profile Using CSS"],    
     # ... default tasks for other weeks
 }
 
