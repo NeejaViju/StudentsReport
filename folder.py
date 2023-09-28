@@ -30,7 +30,7 @@ student_data = {
     "PPF007": "Riyas ahamed J"
 }
 
-weeks = 5  # Number of weeks
+weeks = 52  # Number of weeks
 
 for student_id, student_name in student_data.items():
     student_folder = os.path.join("Students", f"{student_id} - {student_name}")
