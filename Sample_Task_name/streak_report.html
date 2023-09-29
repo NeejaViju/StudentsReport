@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Streak Report</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+    <script>
+        function loadStreakData() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "./Consolidated_Report.xlsx", true);
+            xhttp.responseType = "arraybuffer";
+
+            xhttp.onload = function (e) {
+                const arraybuffer = xhttp.response;
+                const data = new Uint8Array(arraybuffer);
+                const arr = [];
+                for (let i = 0; i !== data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+                const bstr = arr.join("");
+                const workbook = XLSX.read(bstr, { type: "binary" });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const json = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+
+                populateStreakTable(json);
+            };
+
+            xhttp.send();
+        }
+
+        function populateStreakTable(data) {
+    const tableBody = document.getElementById("streakTableBody");
+
+    data.forEach(row => {
+        // Only add rows that have a valid Student ID format
+        if (/^PPP\d{3}$|^PPF\d{3}$/.test(row["Student ID"])) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${row["Student ID"]}</td>
+                <td>${row["Student Name"]}</td>
+                <td>${row["Streak"]} ${row["Streak"] > 0 ? '🔥' : ''}</td>
+            `;
+            tableBody.appendChild(tr);
+        }
+    });
+}
+
+
+
+        window.onload = function () {
+            loadStreakData();
+        };
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Streak Report</h1>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Streak</th>
+                </tr>
+            </thead>
+            <tbody id="streakTableBody">
+                <!-- Data will be loaded dynamically from the Excel -->
+            </tbody>
+        </table>
+
+    </div>
+</body>
+
+</html>

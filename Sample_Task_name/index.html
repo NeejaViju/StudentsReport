@@ -132,11 +132,16 @@ window.onload = function () {
         <h2 class="text-center mb-4">Weekly task list</h2>
         <br>
         <div class="text-center mb-4">
+           
             <div class="select-wrapper">
+                
+            
                 <select id="weekSelector" onchange="showWeekTasks()">
                     <!-- Options will be added dynamically from the Excel -->
                 </select>
+                
             </div>
+            <button onclick="window.location.href='streak_report.html';" class="btn btn-info mb-3">Streak Report</button>
         </div>
 
         <div class="task-table">
