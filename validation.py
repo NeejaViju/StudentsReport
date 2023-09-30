@@ -110,6 +110,12 @@ for specific_week in weeks_to_report:
         columns=["Student ID", "Student Name", "Week", "Pending Task", "Completion Status"]
     )
 
+      # Calculate streak for each student separately
+    report_df["Streak"] = report_df.groupby('Student ID')["Completion Status"].transform(
+        lambda x: (x == "Completed").astype(int).cumsum()
+    )
+
+
     report_excel_filename = f"{specific_week}_report.xlsx"
 
 

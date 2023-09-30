@@ -39,7 +39,7 @@
             tr.innerHTML = `
                 <td>${row["Student ID"]}</td>
                 <td>${row["Student Name"]}</td>
-                <td>${row["Streak"]} ${row["Streak"] > 0 ? '🔥' : ''}</td>
+                <td>${row["Total Streak"]} ${row["Total Streak"] > 0 ? '🔥' : ''}</td>
             `;
             tableBody.appendChild(tr);
         }
