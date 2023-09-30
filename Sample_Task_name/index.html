@@ -7,6 +7,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Added styles */
+        body, html {
+            height: 100%;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 100vh;
+            padding-bottom: 50px; /* to avoid overlapping with the fixed note at the bottom */
+        }
+
+        .task-table {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .popup img {
+            max-width: 100%;
+            max-height: 300px;
+        }
+
+        /* Added styles for fixed note */
+        .fixed-note {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9); /* semi-transparent white background */
+            padding: 10px 0;
+        }
+    </style>
+
     <script>
         function copyTaskName(taskName) {
             const tempInput = document.createElement("input");
@@ -137,6 +172,7 @@ window.onload = function () {
                     <!-- Options will be added dynamically from the Excel -->
                 </select>
             </div>
+            <button onclick="window.location.href='streak_report.html';" class="btn btn-info mb-3">Streak Report</button>
         </div>
 
         <div class="task-table">
@@ -147,11 +183,13 @@ window.onload = function () {
             <button class="close-button" onclick="closeImagePopup()">&times;</button>
             <img src="" alt="Popup Image">
         </div>
+    </div>
 
-        <p class="text-center mt-5">
-            <strong>"If you have multiple screenshots for a task, make use of this
-                <a href="https://merge.imageonline.co/" target="_blank">website</a> to merge"
-        </p>
+    <!-- Fixed note outside of the container -->
+    <div class="fixed-note">
+        <strong>"If you have multiple screenshots for a task, make use of this
+            <a href="https://merge.imageonline.co/" target="_blank">website</a> to merge"
+        </strong>
     </div>
 </body>
 
