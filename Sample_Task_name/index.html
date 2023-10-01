@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Task List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Added styles */
+        body, html {
+            height: 100%;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 100vh;
+            padding-bottom: 50px; /* to avoid overlapping with the fixed note at the bottom */
+        }
+
+        .task-table {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .popup img {
+            max-width: 100%;
+            max-height: 300px;
+        }
+
+        /* Added styles for fixed note */
+        .fixed-note {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9); /* semi-transparent white background */
+            padding: 10px 0;
+        }
+    </style>
+
+    <script>
+        function copyTaskName(taskName) {
+            const tempInput = document.createElement("input");
+            tempInput.value = taskName;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            alert("Task name copied: " + taskName);
+        }
+
+        
+        function openImagePopup(imageSrc) {
+            const popup = document.querySelector('.popup');
+            const image = popup.querySelector('img');
+            image.src = imageSrc;
+            popup.style.display = 'flex';
+        }
+
+        function closeImagePopup() {
+            const popup = document.querySelector('.popup');
+            popup.style.display = 'none';
+        }
+
+        function showWeekTasks() {
+            const selectedWeek = document.getElementById('weekSelector').value;
+
+            const allTasks = document.querySelectorAll('.task-card');
+            allTasks.forEach(task => task.style.display = 'none');
+
+            const currentWeekTasks = document.querySelector(`.${selectedWeek}`);
+            if (currentWeekTasks) {
+                currentWeekTasks.style.display = 'block';
+            }
+        }
+
+        
+
+        function loadExcelData() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "./tasks.xlsx", true);
+            xhttp.responseType = "arraybuffer";
+
+            xhttp.onload = function (e) {
+                const arraybuffer = xhttp.response;
+                const data = new Uint8Array(arraybuffer);
+                const arr = [];
+                for (let i = 0; i !== data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+                const bstr = arr.join("");
+                const workbook = XLSX.read(bstr, { type: "binary" });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const json = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+
+                createTasksFromJson(json);
+            };
+
+            xhttp.send();
+        }
+
+        // After reading the Excel file and creating the task table, this will populate the dropdown menu
+function populateWeekDropdown(weeks) {
+    const weekSelector = document.getElementById('weekSelector');
+    weeks.forEach(week => {
+        const option = document.createElement('option');
+        option.value = `week${week}`;
+        option.textContent = `Week ${week}`;
+        weekSelector.appendChild(option);
+    });
+
+    // Set default selected week to Week 01
+    weekSelector.value = "week01";
+    showWeekTasks();
+}
+
+
+function createTasksFromJson(data) {
+    const taskTable = document.querySelector(".task-table");
+
+    data.forEach(task => {
+        const week = "week" + task["Week"].toString().padStart(2, '0');
+        let taskCard = document.querySelector(`.${week}`);
+
+        if (!taskCard) {
+            taskCard = document.createElement("div");
+            taskCard.className = `task-card ${week}`;
+            taskCard.innerHTML = `<h2>Week ${task["Week"]} Task</h2>`;
+            taskTable.appendChild(taskCard);
+
+            const weekSelector = document.getElementById("weekSelector");
+            const option = document.createElement("option");
+            option.value = week;
+            option.innerText = `Week ${task["Week"]}`;
+            weekSelector.appendChild(option);
+        }
+
+        const taskRow = document.createElement("div");
+        taskRow.className = "task-row";
+        taskRow.innerHTML = `
+            <div class="task-details">${task["Task Name"]}</div>
+            <div class="task-actions">
+                <button class="btn btn-primary copy-button" onclick="copyTaskName('${task["Task Name"]}')">Copy Name</button>
+                <button class="btn btn-primary view-image-button" onclick="openImagePopup('${task["Image"]}')">Sample Image</button>
+            </div>
+        `;
+        taskCard.appendChild(taskRow);
+    });
+
+    // Display tasks for week01 after loading and creating them from Excel
+    showWeekTasks();
+}
+
+window.onload = function () {
+    loadExcelData();
+    // Removed the showWeekTasks from here as it's already in the createTasksFromJson function.
+};
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Pepper Programming ++</h1>
+        <h2 class="text-center mb-4">Weekly task list</h2>
+        <br>
+        <div class="text-center mb-4">
+            <div class="select-wrapper">
+                <select id="weekSelector" onchange="showWeekTasks()">
+                    <!-- Options will be added dynamically from the Excel -->
+                </select>
+            </div>
+            <button onclick="window.location.href='streak_report.html';" class="btn btn-info mb-3">Streak Report</button>
+        </div>
+
+        <div class="task-table">
+            <!-- Tasks will be loaded dynamically from the Excel -->
+        </div>
+
+        <div class="popup" onclick="closeImagePopup()">
+            <button class="close-button" onclick="closeImagePopup()">&times;</button>
+            <img src="" alt="Popup Image">
+        </div>
+    </div>
+
+    <!-- Fixed note outside of the container -->
+    <div class="fixed-note">
+        <strong>"If you have multiple screenshots for a task, make use of this
+            <a href="https://merge.imageonline.co/" target="_blank">website</a> to merge"
+        </strong>
+    </div>
+</body>
+
+</html>
