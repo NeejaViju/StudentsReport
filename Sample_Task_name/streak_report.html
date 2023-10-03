@@ -32,6 +32,17 @@
         function populateStreakTable(data) {
     const tableBody = document.getElementById("streakTableBody");
 
+    // Sort the data based on the streak count
+    data.sort((a, b) => {
+        // Primary sort based on streak count
+        if (b["Total Streak"] - a["Total Streak"] !== 0) {
+            return b["Total Streak"] - a["Total Streak"];
+        }
+        
+        // Secondary sort based on student name if streaks are equal
+        return a["Student Name"].localeCompare(b["Student Name"]);
+    });
+
     data.forEach(row => {
         // Only add rows that have a valid Student ID format
         if (/^PPP\d{3}$|^PPF\d{3}$/.test(row["Student ID"])) {
@@ -45,6 +56,7 @@
         }
     });
 }
+
 
 
 

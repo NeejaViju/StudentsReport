@@ -115,8 +115,18 @@ for specific_week in weeks_to_report:
         lambda x: (x == "Completed").astype(int).cumsum()
     )
 
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    folder_path = os.path.join(current_dir,'Reports')
 
-    report_excel_filename = f"{specific_week}_report.xlsx"
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+
+    # Create the report filename
+    report_excel_filename = os.path.join(folder_path, f"{specific_week}_report.xlsx")
+
+
+
 
 
 
