@@ -3,7 +3,8 @@ import pandas as pd
 import os
 
 # List of files
-files = [f"Week{str(i).zfill(2)}_report.xlsx" for i in range(1, 53)]
+reports_directory = "Reports"
+files = [os.path.join(reports_directory, f"Week{str(i).zfill(2)}_report.xlsx") for i in range(1, 53)]
 
 # Read the first file to initialize the final dataframe
 if os.path.exists(files[0]):
