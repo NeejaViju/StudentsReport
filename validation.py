@@ -26,9 +26,9 @@ default_tasks = {
     "Week02": ["create_wordpress_blog_and_7articles","update_linkedin_with-photo","create_canva-menu","download_figma_and_install"],
     "Week03" :["Fibonacci_Sequence","Calculator","Tic_Tac_Toe","Generative AI"],
     "Week04": ["Error messages_200 OK_404 Not Found","Google Chrome Extensions","Tweet_AI tool_Futurepedia","Download_Install_ Google Chrome Canary Version"],
-    "Week05": ["Create Framer Site","Create a Project on Flutterflow","Create Paper Prototype","Create Social Media Profile Using CSS"] ,  
+    "Week05": ["Create Framer Site","Create A Snake Game","Create Paper Prototype","Create Social Media Profile Using CSS"] ,  
     "Week06": ["summary of Fermi's paradox","summary of Drake's Equation","Create a table  using CSS Grid","create small project using CSS Flexbox"],
-    "Week07": ["create small project using CSS box sizing","create small project using  CSS Box Shadow","create small project ussing CSS Border Radius","create small project using CSS Justify content"]
+    "Week07": ["create small project using CSS box sizing","create small project using CSS Box Shadow","create small project ussing CSS Border Radius","create small project using CSS Justify content"]
     # ... default tasks for other weeks
 }
 
@@ -110,7 +110,23 @@ for specific_week in weeks_to_report:
         columns=["Student ID", "Student Name", "Week", "Pending Task", "Completion Status"]
     )
 
-    report_excel_filename = f"{specific_week}_report.xlsx"
+      # Calculate streak for each student separately
+    report_df["Streak"] = report_df.groupby('Student ID')["Completion Status"].transform(
+        lambda x: (x == "Completed").astype(int).cumsum()
+    )
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    folder_path = os.path.join(current_dir,'Reports')
+
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+
+    # Create the report filename
+    report_excel_filename = os.path.join(folder_path, f"{specific_week}_report.xlsx")
+
+
+
 
 
 
