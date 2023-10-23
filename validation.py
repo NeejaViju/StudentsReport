@@ -28,7 +28,7 @@ default_tasks = {
     "Week04": ["Error messages_200 OK_404 Not Found","Google Chrome Extensions","Tweet_AI tool_Futurepedia","Download_Install_ Google Chrome Canary Version"],
     "Week05": ["Create Framer Site","Create A Snake Game","Create Paper Prototype","Create Social Media Profile Using CSS"] ,  
     "Week06": ["summary of Fermi's paradox","summary of Drake's Equation","Create a table  using CSS Grid","create small project using CSS Flexbox"],
-    "Week07": ["create small project using CSS box sizing","create small project using CSS Box Shadow","create small project ussing CSS Border Radius","create small project using CSS Justify content"]
+    "Week07": ["create small project using CSS box sizing","create small project using CSS Box Shadow","create small project ussing CSS Border Radius","create small project using CSS Justify content"],
     "Week08": ["Learn prompt Engineering","Create sidebar","Dig Hugging Face","Learn Javascript"]
     # ... default tasks for other weeks
 }
