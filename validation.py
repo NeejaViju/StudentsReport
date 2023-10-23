@@ -29,7 +29,8 @@ default_tasks = {
     "Week05": ["Create Framer Site","Create A Snake Game","Create Paper Prototype","Create Social Media Profile Using CSS"] ,  
     "Week06": ["summary of Fermi's paradox","summary of Drake's Equation","Create a table  using CSS Grid","create small project using CSS Flexbox"],
     "Week07": ["create small project using CSS box sizing","create small project using CSS Box Shadow","create small project ussing CSS Border Radius","create small project using CSS Justify content"],
-    "Week08": ["Learn prompt Engineering","Create sidebar","Dig Hugging Face","Learn Javascript"]
+    "Week08": ["Learn prompt Engineering","Create sidebar","Dig Hugging Face","Learn Javascript"],
+    "Week09": ["create a Menu bar like github UI","create a login form for Restaurent booking","create a Menu bar like github UI with Mobile optimization.","create a Google Adsense"]
     # ... default tasks for other weeks
 }
 
@@ -63,7 +64,7 @@ student_data = {
     "PPF007": "Riyas ahamed J",
 }
 
-weeks_to_report = ["Week01", "Week02", "Week03", "Week04", "Week05", "Week06", "Week07", "Week08"]  # Add other weeks as needed
+weeks_to_report = ["Week01", "Week02", "Week03", "Week04", "Week05", "Week06", "Week07", "Week08","Week09"]  # Add other weeks as needed
 
 def is_file_present(expected_file, files_in_folder):
     return any(
