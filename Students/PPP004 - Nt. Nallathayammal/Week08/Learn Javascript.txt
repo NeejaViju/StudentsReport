@@ -1,0 +1,32 @@
+JS doubts
+document.write()
+Left Shift Assignment Example
+let x = -100;
+x <<= 5;
+Right Shift Assignment Example
+let x = -100;
+x >>= 5;
+Unsigned Right Shift Assignment Example
+let x = -100;
+x >>>= 5;
+Bitwise AND Assignment Example
+let x = 10;
+x &= 5;
+Bitwise OR Assignment Example
+let x = 10;
+x |= 5;
+Bitwise XOR Assignment Example
+let x = 10;
+x ^= 5;
+Logical AND Assignment Example
+let x = 10;
+x &&= 5;
+Logical OR Assignment Example
+let x = 10;
+x ||= 5;
+let y = 123e5;    // 12300000
+let z = 123e-5;   // 0.00123
+
+
+c306765dfde4bf812552e99ba202fd3441839e72
+d88da9b3207ccd1d443d5ce319d7aa5f3dbc980b
